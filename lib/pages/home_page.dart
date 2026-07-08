@@ -9,7 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
+
   List toDoList = [
     ['Learn Flutter Development', false],
     ['Eat Shashlik', false],
@@ -23,8 +24,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void saveNewTask() {
+    if (_controller.text.trim().isEmpty) return;
+
     setState(() {
-      toDoList.add([_controller.text, false]);
+      toDoList.add([_controller.text.trim(), false]);
       _controller.clear();
     });
   }
@@ -36,55 +39,68 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green.shade300,
       appBar: AppBar(
-        title: Text('Simple Todo'),
+        title: const Text("Simple Todo"),
         backgroundColor: Colors.green,
         foregroundColor: Colors.white,
       ),
+
       body: ListView.builder(
+        padding: const EdgeInsets.only(top: 10, bottom: 20),
         itemCount: toDoList.length,
-        itemBuilder: (BuildContext context, index) {
+        itemBuilder: (context, index) {
           return TodoList(
             taskName: toDoList[index][0],
             taskCompleted: toDoList[index][1],
-            onChanged: (value) => checkBoxChanged(index),
-            deleteFunction: (value) => deleteTask(index),
+            onChanged: (_) => checkBoxChanged(index),
+            deleteFunction: (_) => deleteTask(index),
           );
         },
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+          child: Row(
+            children: [
+              Expanded(
                 child: TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    hintText: 'Add new todo items',
+                    hintText: "Add new todo",
                     filled: true,
                     fillColor: Colors.green.shade200,
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green),
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.green),
                       borderRadius: BorderRadius.circular(15),
+                      borderSide: const BorderSide(color: Colors.green),
                     ),
                   ),
                 ),
               ),
-            ),
-            FloatingActionButton(
-              onPressed: saveNewTask,
-              child: Icon(Icons.add),
-            ),
-          ],
+
+              const SizedBox(width: 10),
+
+              FloatingActionButton(
+                onPressed: saveNewTask,
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),
         ),
       ),
     );
