@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/theme/app_colors.dart';
 import 'package:todo_app/utils/todo_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
-  List toDoList = [
+  final List<List<dynamic>> toDoList = [
     ['Learn Flutter Development', false],
     ['Eat Shashlik', false],
     ['Eat Somsa', false],
@@ -28,8 +29,9 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       toDoList.add([_controller.text.trim(), false]);
-      _controller.clear();
     });
+
+    _controller.clear();
   }
 
   void deleteTask(int index) {
@@ -47,11 +49,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade300,
+      backgroundColor: AppColors.background,
+
       appBar: AppBar(
         title: const Text("Simple Todo"),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
+        elevation: 0,
       ),
 
       body: ListView.builder(
@@ -77,26 +81,40 @@ class _HomePageState extends State<HomePage> {
                   controller: _controller,
                   decoration: InputDecoration(
                     hintText: "Add new todo",
+
+                    hintStyle: const TextStyle(color: AppColors.grey),
+
                     filled: true,
-                    fillColor: Colors.green.shade200,
+                    fillColor: AppColors.primaryLight,
+
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(color: AppColors.border),
                     ),
+
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: Colors.green),
+                      borderSide: const BorderSide(
+                        color: AppColors.primary,
+                        width: 2,
+                      ),
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(width: 10),
+              const SizedBox(width: 12),
 
               FloatingActionButton(
                 onPressed: saveNewTask,
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.white,
+                elevation: 0,
                 child: const Icon(Icons.add),
               ),
             ],

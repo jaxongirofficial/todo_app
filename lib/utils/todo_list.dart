@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/core/theme/app_colors.dart';
 
 class TodoList extends StatelessWidget {
   const TodoList({
@@ -18,7 +19,7 @@ class TodoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 0),
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const StretchMotion(),
@@ -26,6 +27,8 @@ class TodoList extends StatelessWidget {
             SlidableAction(
               onPressed: deleteFunction,
               icon: Icons.delete,
+              backgroundColor: AppColors.red,
+              foregroundColor: AppColors.white,
               borderRadius: BorderRadius.circular(15),
             ),
           ],
@@ -33,7 +36,7 @@ class TodoList extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.green,
+            color: AppColors.primary,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(
@@ -41,20 +44,26 @@ class TodoList extends StatelessWidget {
               Checkbox(
                 value: taskCompleted,
                 onChanged: onChanged,
-                checkColor: Colors.black,
-                activeColor: Colors.white,
-                side: BorderSide(color: Colors.white),
+                checkColor: AppColors.black,
+                activeColor: AppColors.white,
+                side: const BorderSide(color: AppColors.white),
               ),
-              Text(
-                taskName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  decoration: taskCompleted
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none,
-                  decorationColor: Colors.white,
-                  decorationThickness: 1,
+
+              const SizedBox(width: 10),
+
+              Expanded(
+                child: Text(
+                  taskName,
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    decoration: taskCompleted
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                    decorationColor: AppColors.white,
+                    decorationThickness: 2,
+                  ),
                 ),
               ),
             ],
